@@ -19,6 +19,9 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Roboto', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -26,9 +29,9 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#9b87f5',
-					light: '#E5DEFF',
-					dark: '#7E69AB',
+					DEFAULT: '#000000',
+					light: '#333333',
+					dark: '#000000',
 					foreground: '#FFFFFF'
 				},
 				secondary: {
