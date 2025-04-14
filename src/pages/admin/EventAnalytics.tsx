@@ -1,15 +1,12 @@
-
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent } from '@/components/ui/card';
-import { BarChart, PieChart, LineChart } from 'recharts';
 import { 
   ChevronDown, Ticket, DollarSign, Users, Clock, 
-  Male, Female
+  UserCircle2, User
 } from 'lucide-react';
 
-// Mock analytics data
 const eventData = {
   id: "1",
   title: "Tech Conference 2025",
@@ -43,7 +40,6 @@ const eventData = {
   ],
   checkInData: {
     total: 157,
-    // Mock data for check-in times throughout the day
     timeline: [
       { time: "8:00 AM", count: 12 },
       { time: "9:00 AM", count: 32 },
@@ -57,9 +53,7 @@ const eventData = {
 
 const EventAnalytics = () => {
   const { id } = useParams();
-  // In a real app, would fetch analytics data based on id
   
-  // Calculate gender percentages
   const totalAttendees = eventData.demographics.gender.reduce((sum, item) => sum + item.value, 0);
   const malePercentage = Math.round((eventData.demographics.gender[0].value / totalAttendees) * 100);
   const femalePercentage = Math.round((eventData.demographics.gender[1].value / totalAttendees) * 100);
@@ -89,7 +83,6 @@ const EventAnalytics = () => {
           </div>
         </div>
         
-        {/* Stats Overview */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardContent className="p-6">
@@ -178,16 +171,14 @@ const EventAnalytics = () => {
           </Card>
         </div>
         
-        {/* Demographics and Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Gender Demographics */}
           <Card>
             <CardContent className="p-6">
               <h3 className="font-semibold mb-6">Gender Demographics</h3>
               <div className="flex justify-around mb-4">
                 <div className="text-center">
                   <div className="h-16 w-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto">
-                    <Male className="h-8 w-8 text-gray-600" />
+                    <UserCircle2 className="h-8 w-8 text-gray-600" />
                   </div>
                   <p className="font-bold mt-2">{malePercentage}%</p>
                   <p className="text-xs text-gray-500">Male</p>
@@ -196,7 +187,7 @@ const EventAnalytics = () => {
                 
                 <div className="text-center">
                   <div className="h-16 w-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto">
-                    <Female className="h-8 w-8 text-gray-600" />
+                    <User className="h-8 w-8 text-gray-600" />
                   </div>
                   <p className="font-bold mt-2">{femalePercentage}%</p>
                   <p className="text-xs text-gray-500">Female</p>
@@ -215,7 +206,6 @@ const EventAnalytics = () => {
             </CardContent>
           </Card>
           
-          {/* Ticket Types */}
           <Card>
             <CardContent className="p-6">
               <h3 className="font-semibold mb-4">Ticket Types</h3>
@@ -243,7 +233,6 @@ const EventAnalytics = () => {
             </CardContent>
           </Card>
           
-          {/* Check-in Timeline */}
           <Card>
             <CardContent className="p-6">
               <h3 className="font-semibold mb-4">Check-in Timeline</h3>
@@ -267,13 +256,11 @@ const EventAnalytics = () => {
           </Card>
         </div>
         
-        {/* Sales Over Time Chart */}
         <Card>
           <CardContent className="p-6">
             <h3 className="font-semibold mb-6">Sales Performance</h3>
             <div className="h-80 bg-gray-100 rounded-lg flex items-center justify-center">
               <p className="text-gray-500">Sales chart would render here using recharts</p>
-              {/* In a real implementation, we would use the recharts LineChart component here */}
             </div>
             <p className="text-xs text-gray-500 mt-4 text-center">
               Weekly ticket sales and revenue over time
