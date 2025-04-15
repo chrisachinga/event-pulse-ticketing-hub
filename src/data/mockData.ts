@@ -1,5 +1,5 @@
-
 import { EventCardProps } from '@/components/events/EventCard';
+import { OrganizerCardProps } from '@/components/organizers/OrganizerCard';
 
 export const mockEvents: EventCardProps[] = [
   {
@@ -82,3 +82,10 @@ export const mockEvents: EventCardProps[] = [
 export const mockFeaturedEvents = mockEvents.filter(event => event.isFeatured);
 export const mockAwardEvents = mockEvents.filter(event => event.isAwardEvent);
 export const mockUpcomingEvents = [...mockEvents].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+const today = new Date();
+export const mockPastEvents = [...mockEvents]
+  .filter(event => new Date(event.date) < today)
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+export { mockOrganizers } from './mockOrganizers';

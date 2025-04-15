@@ -18,6 +18,10 @@ export interface OrganizerCardProps {
   ratingCount: number;
   totalEvents: number;
   verified?: boolean;
+  bio?: string;
+  email?: string;
+  phone?: string;
+  website?: string;
 }
 
 const OrganizerCard = ({
