@@ -21,6 +21,19 @@ import { Calendar, Check, Image, Save, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { mockEvents } from '@/data/mockData';
 
+// Define extended event interface to include required properties
+interface ExtendedEvent {
+  id: string;
+  title: string;
+  date: string;
+  location: string;
+  imageUrl: string;
+  ticketPrice?: number;
+  isAwardEvent?: boolean;
+  description?: string; // Added missing property
+  category?: string;    // Added missing property
+}
+
 const CreateEditEvent = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -29,7 +42,7 @@ const CreateEditEvent = () => {
 
   // Find event if in edit mode
   const existingEvent = isEditMode 
-    ? mockEvents.find(event => event.id === id) 
+    ? mockEvents.find(event => event.id === id) as ExtendedEvent | undefined
     : null;
 
   const [formData, setFormData] = useState({

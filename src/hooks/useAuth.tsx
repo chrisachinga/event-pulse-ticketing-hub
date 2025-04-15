@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import useCache from '@/hooks/useCache';
+import { useCache } from '@/hooks/useCache'; // Changed from default import to named import
 
 // Dummy admin credentials - hardcoded for now
 const ADMIN_USERNAME = 'admin';
@@ -26,7 +26,12 @@ export const useAuth = () => {
   });
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { setCache } = useCache();
+  
+  // Get the required functions from useCache
+  const { data, loading, error, refresh } = useCache(
+    { key: 'auth_state', ttl: 48 * 60 * 60 * 1000 },
+    async () => Promise.resolve(null)
+  );
   
   useEffect(() => {
     // Check for existing auth in session storage
@@ -53,9 +58,6 @@ export const useAuth = () => {
       setAuthState(newState);
       sessionStorage.setItem('auth', JSON.stringify(newState));
       
-      // Cache user data for 48 hours
-      setCache(`user_${username}`, { name: 'Admin User', role: 'admin' }, 48);
-      
       toast({
         title: "Logged in as Admin",
         description: "Welcome back, Admin!",
@@ -71,9 +73,6 @@ export const useAuth = () => {
       };
       setAuthState(newState);
       sessionStorage.setItem('auth', JSON.stringify(newState));
-      
-      // Cache user data for 48 hours
-      setCache(`user_${username}`, { name: 'Regular User', role: 'user' }, 48);
       
       toast({
         title: "Logged in",
