@@ -61,7 +61,7 @@ const Index = () => {
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Button className="bg-primary hover:bg-primary-dark" asChild>
-              <Link to="/create-event">Create Event</Link>
+              <Link to="/admin/events">Create Event</Link>
             </Button>
             <Button variant="outline" className="border-primary text-primary hover:bg-primary/10" asChild>
               <Link to="/pricing">View Pricing</Link>

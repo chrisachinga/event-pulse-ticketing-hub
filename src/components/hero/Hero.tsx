@@ -28,6 +28,8 @@ const Hero = () => {
                     type="text" 
                     placeholder="Search for events"
                     className="pl-10 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    onChange={(e) => console.log('Searching for:', e.target.value)}
+                    onKeyUp={(e) => console.log('KeyUp search for:', e.target.value)}
                   />
                 </div>
               </div>
@@ -38,19 +40,19 @@ const Hero = () => {
           </div>
           
           <div className="flex flex-wrap justify-center gap-4 mt-10">
-            <Button variant="outline" className="text-white border-white hover:bg-white/20">
+            <Button variant="outline" className="border-white bg-black/50 text-white hover:bg-white/20">
               Tech Events
             </Button>
-            <Button variant="outline" className="text-white border-white hover:bg-white/20">
+            <Button variant="outline" className="border-white bg-black/50 text-white hover:bg-white/20">
               Music
             </Button>
-            <Button variant="outline" className="text-white border-white hover:bg-white/20">
+            <Button variant="outline" className="border-white bg-black/50 text-white hover:bg-white/20">
               Sports
             </Button>
-            <Button variant="outline" className="text-white border-white hover:bg-white/20">
+            <Button variant="outline" className="border-white bg-black/50 text-white hover:bg-white/20">
               Award Shows
             </Button>
-            <Button variant="outline" className="text-white border-white hover:bg-white/20">
+            <Button variant="outline" className="border-white bg-black/50 text-white hover:bg-white/20">
               Business
             </Button>
           </div>

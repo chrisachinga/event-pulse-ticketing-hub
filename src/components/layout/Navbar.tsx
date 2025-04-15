@@ -12,7 +12,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import { AlignRight, X } from "lucide-react";
+import { AlignRight, X, SearchIcon, Ticket } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 const Navbar = () => {
@@ -73,11 +73,11 @@ const Navbar = () => {
                     <ListItem href="/events" title="Event Ticketing">
                       Purchase tickets for upcoming events
                     </ListItem>
-                    <ListItem href="/admin/events" title="Event Management">
-                      Create and manage your own events
+                    <ListItem href="/tickets/search" title="Find Tickets">
+                      Search and print your purchased tickets
                     </ListItem>
-                    <ListItem href="/vote/1" title="Award Voting">
-                      Vote for nominees in award ceremonies
+                    <ListItem href="/pricing" title="Pricing">
+                      View our competitive pricing plans
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>
@@ -88,6 +88,11 @@ const Navbar = () => {
           {/* Auth Buttons & Theme Toggle */}
           <div className="flex items-center gap-2">
             <ThemeToggle />
+            <Link to="/tickets/search" className="hidden sm:flex">
+              <Button variant="ghost" size="icon" className="mr-2">
+                <Ticket className="h-5 w-5" />
+              </Button>
+            </Link>
             <div className="hidden md:flex gap-2">
               <Button variant="outline" asChild>
                 <Link to="/login">Sign In</Link>
@@ -132,6 +137,20 @@ const Navbar = () => {
               onClick={() => setMobileMenuOpen(false)}
             >
               Organizers & Artists
+            </Link>
+            <Link
+              to="/tickets/search"
+              className="px-4 py-2 text-foreground hover:bg-accent rounded-md"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Find Tickets
+            </Link>
+            <Link
+              to="/pricing"
+              className="px-4 py-2 text-foreground hover:bg-accent rounded-md"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Pricing
             </Link>
             <hr className="my-2 border-muted" />
             <Link

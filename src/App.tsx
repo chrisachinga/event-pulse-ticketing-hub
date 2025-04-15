@@ -23,6 +23,9 @@ import Awards from "./pages/Awards";
 import AwardDetails from "./pages/AwardDetails";
 import Organizers from "./pages/Organizers";
 import OrganizerDetails from "./pages/OrganizerDetails";
+import Pricing from "./pages/Pricing";
+import TicketSearch from "./pages/TicketSearch";
+import ProtectedRoute from "./components/protected/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -37,16 +40,39 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/pricing" element={<Pricing />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/events" element={<Events />} />
             <Route path="/events/:id" element={<EventDetails />} />
             <Route path="/events/:id/tickets" element={<TicketPurchase />} />
             <Route path="/tickets/:id" element={<TicketDetails />} />
             <Route path="/tickets/:id/download" element={<TicketDownload />} />
+            <Route path="/tickets/search" element={<TicketSearch />} />
             <Route path="/vote/:id" element={<VotingPage />} />
-            <Route path="/admin/events" element={<EventManagement />} />
-            <Route path="/admin/events/:id/check-in" element={<CheckIn />} />
-            <Route path="/admin/events/:id/analytics" element={<EventAnalytics />} />
+            <Route 
+              path="/admin/events" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <EventManagement />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/events/:id/check-in" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <CheckIn />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/events/:id/analytics" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <EventAnalytics />
+                </ProtectedRoute>
+              } 
+            />
             <Route path="/awards" element={<Awards />} />
             <Route path="/awards/:id" element={<AwardDetails />} />
             <Route path="/organizers" element={<Organizers />} />
