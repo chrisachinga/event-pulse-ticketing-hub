@@ -31,7 +31,14 @@ import Pricing from "./pages/Pricing";
 import TicketSearch from "./pages/TicketSearch";
 import ProtectedRoute from "./components/protected/ProtectedRoute";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

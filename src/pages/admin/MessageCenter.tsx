@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { useParams } from 'react-router-dom';
@@ -17,6 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Avatar } from '@/components/ui/avatar';
+import { Label } from '@/components/ui/label';
 import { 
   Send, 
   Filter, 
@@ -29,7 +29,7 @@ import {
   BookOpen
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Badge } from '@/components/ui/badge'; // Import the Badge component
+import { Badge } from '@/components/ui/badge';
 
 // Mock data for messages
 const mockMessages = [
@@ -73,7 +73,6 @@ const mockMessages = [
     isEmail: false,
     category: 'organizer'
   },
-  // Add more mock messages as needed
 ];
 
 // Mock contacts for mass messaging
@@ -108,7 +107,6 @@ const mockContacts = [
     email: 'jane.doe@example.com',
     type: 'individual',
   },
-  // Add more mock contacts as needed
 ];
 
 // Mock templates for messaging
@@ -131,7 +129,6 @@ const mockTemplates = [
     subject: 'Thank You for Attending {event_name}',
     content: 'Dear {name},\n\nThank you for attending {event_name}. We hope you had a great time!\n\nWe would appreciate your feedback on the event. Please take a moment to fill out our survey: {survey_link}\n\nBest regards,\nThe Organizer Team'
   },
-  // Add more mock templates as needed
 ];
 
 const MessageCenter = () => {
