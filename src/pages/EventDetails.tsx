@@ -1,12 +1,12 @@
 
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Calendar, Clock, MapPin, Users, Award } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Calendar, Clock, MapPin, Users, Award, User } from 'lucide-react';
 import { formatDate, formatTime } from '@/lib/utils';
+import EventRating from '@/components/events/EventRating';
 
 // Mock data - in a real app would come from API
 const eventDetails = {
@@ -19,6 +19,10 @@ const eventDetails = {
   address: "123 Innovation Ave, Silicon Valley, CA",
   imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1000",
   isAwardEvent: true,
+  averageRating: 4.7,
+  totalRatings: 158,
+  organizerId: "1",
+  organizerName: "EventPro Productions",
   ticketTypes: [
     { id: "1", name: "General Admission", price: 1000, available: true },
     { id: "2", name: "VIP", price: 2500, available: true },
@@ -83,8 +87,25 @@ const EventDetails = () => {
               <CardContent className="p-6">
                 <h2 className="text-2xl font-bold mb-4">About This Event</h2>
                 <p className="text-gray-700">{eventDetails.description}</p>
+                
+                <div className="mt-4">
+                  <Link
+                    to={`/organizers/${eventDetails.organizerId}`}
+                    className="inline-flex items-center text-primary hover:underline"
+                  >
+                    <User className="h-4 w-4 mr-1" />
+                    <span>Organized by: {eventDetails.organizerName}</span>
+                  </Link>
+                </div>
               </CardContent>
             </Card>
+            
+            {/* Ratings */}
+            <EventRating 
+              eventId={eventDetails.id} 
+              averageRating={eventDetails.averageRating}
+              totalRatings={eventDetails.totalRatings}
+            />
             
             {/* Guests */}
             <Card>
