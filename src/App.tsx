@@ -16,6 +16,10 @@ import TicketPurchase from "./pages/TicketPurchase";
 import TicketDetails from "./pages/TicketDetails";
 import TicketDownload from "./pages/TicketDownload";
 import EventManagement from "./pages/admin/EventManagement";
+import CreateEditEvent from "./pages/admin/CreateEditEvent";
+import EventAccounting from "./pages/admin/EventAccounting";
+import Notifications from "./pages/admin/Notifications";
+import MessageCenter from "./pages/admin/MessageCenter";
 import CheckIn from "./pages/admin/CheckIn";
 import EventAnalytics from "./pages/admin/EventAnalytics";
 import VotingPage from "./pages/VotingPage";
@@ -54,6 +58,46 @@ const App = () => (
               element={
                 <ProtectedRoute requireAdmin={true}>
                   <EventManagement />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/events/create" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <CreateEditEvent />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/events/:id/edit" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <CreateEditEvent />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/events/:id/accounting" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <EventAccounting />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/events/:id/messages" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <MessageCenter />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/notifications" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <Notifications />
                 </ProtectedRoute>
               } 
             />

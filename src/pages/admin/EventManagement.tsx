@@ -4,11 +4,14 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Link } from 'react-router-dom';
 import { 
   Calendar, Search, Plus, Edit, Trash2, ChevronDown, Users, 
-  Activity, DollarSign, CheckSquare, FileText
+  Activity, DollarSign, CheckSquare, FileText, Mail, Share2
 } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
+import EventSharing from '@/components/events/EventSharing';
 
 // Mock event data
 const mockEvents = [
@@ -57,6 +60,7 @@ const mockEvents = [
 const EventManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const { toast } = useToast();
   
   // Filter events based on search term and status filter
   const filteredEvents = mockEvents.filter(event => {
@@ -64,6 +68,18 @@ const EventManagement = () => {
     const matchesStatus = filterStatus === 'all' || event.status === filterStatus;
     return matchesSearch && matchesStatus;
   });
+
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log('KeyUp search for:', (e.target as HTMLInputElement).value);
+    setSearchTerm((e.target as HTMLInputElement).value);
+  };
+
+  const handleDeleteEvent = (eventId: string) => {
+    toast({
+      title: "Event deleted",
+      description: "The event has been successfully deleted",
+    });
+  };
 
   return (
     <DashboardLayout>
@@ -74,10 +90,10 @@ const EventManagement = () => {
             <p className="text-gray-600">Manage and monitor your events</p>
           </div>
           <Button className="mt-4 sm:mt-0" asChild>
-            <a href="/admin/events/create">
+            <Link to="/admin/events/create">
               <Plus className="mr-2 h-4 w-4" />
               Create Event
-            </a>
+            </Link>
           </Button>
         </div>
         
@@ -90,6 +106,7 @@ const EventManagement = () => {
               className="pl-10"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyUp={handleSearch}
             />
           </div>
           
@@ -140,24 +157,41 @@ const EventManagement = () => {
                           {event.ticketsSold} tickets sold
                         </div>
                       </div>
-                      <div className="mt-4 flex gap-2">
+                      <div className="mt-4 flex flex-wrap gap-2">
                         <Button variant="outline" size="sm" asChild>
-                          <a href={`/admin/events/${event.id}/edit`}>
+                          <Link to={`/admin/events/${event.id}/edit`}>
                             <Edit className="h-3.5 w-3.5 mr-1" />
                             Edit
-                          </a>
+                          </Link>
                         </Button>
                         <Button variant="outline" size="sm" asChild>
-                          <a href={`/admin/events/${event.id}/tickets`}>
+                          <Link to={`/admin/events/${event.id}/tickets`}>
                             <FileText className="h-3.5 w-3.5 mr-1" />
                             Tickets
-                          </a>
+                          </Link>
                         </Button>
                         <Button variant="outline" size="sm" asChild>
-                          <a href={`/admin/events/${event.id}/check-in`}>
+                          <Link to={`/admin/events/${event.id}/check-in`}>
                             <CheckSquare className="h-3.5 w-3.5 mr-1" />
                             Check-in
-                          </a>
+                          </Link>
+                        </Button>
+                        <Button variant="outline" size="sm" asChild>
+                          <Link to={`/admin/events/${event.id}/messages`}>
+                            <Mail className="h-3.5 w-3.5 mr-1" />
+                            Message
+                          </Link>
+                        </Button>
+                        <Button variant="outline" size="sm" asChild>
+                          <Link to={`/admin/events/${event.id}/accounting`}>
+                            <DollarSign className="h-3.5 w-3.5 mr-1" />
+                            Accounting
+                          </Link>
+                        </Button>
+                        <EventSharing eventId={event.id} eventName={event.title} />
+                        <Button variant="outline" size="sm" className="text-red-500 border-red-200 hover:bg-red-50" onClick={() => handleDeleteEvent(event.id)}>
+                          <Trash2 className="h-3.5 w-3.5 mr-1" />
+                          Delete
                         </Button>
                       </div>
                     </div>
@@ -191,10 +225,10 @@ const EventManagement = () => {
                       
                       <div className="mt-4 flex justify-center">
                         <Button asChild>
-                          <a href={`/admin/events/${event.id}/dashboard`}>
+                          <Link to={`/admin/events/${event.id}/analytics`}>
                             <Activity className="h-4 w-4 mr-1" />
                             Analytics
-                          </a>
+                          </Link>
                         </Button>
                       </div>
                     </div>

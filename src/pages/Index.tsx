@@ -3,6 +3,8 @@ import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import Hero from '@/components/hero/Hero';
 import EventGrid from '@/components/events/EventGrid';
+import TopRatedSection from '@/components/home/TopRatedSection';
+import CookieConsent from '@/components/common/CookieConsent';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -12,6 +14,7 @@ const Index = () => {
   return (
     <MainLayout>
       <Hero />
+      <CookieConsent />
       
       <div className="container mx-auto px-4 py-12">
         {/* Featured Events */}
@@ -52,9 +55,14 @@ const Index = () => {
           </div>
           <EventGrid events={mockUpcomingEvents.slice(0, 4)} />
         </div>
-        
-        {/* Call to Action */}
-        <div className="bg-primary/10 rounded-xl p-8 text-center mb-8">
+      </div>
+      
+      {/* Top Rated Section */}
+      <TopRatedSection />
+      
+      {/* Call to Action */}
+      <div className="container mx-auto px-4 py-8 mb-8">
+        <div className="bg-primary/10 rounded-xl p-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Organize Your Own Event</h2>
           <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
             Create and manage your event with our comprehensive platform. From ticketing to check-ins, we've got you covered.
