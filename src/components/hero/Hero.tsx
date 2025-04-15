@@ -5,6 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 const Hero = () => {
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log('KeyUp search for:', (e.target as HTMLInputElement).value);
+  };
+
   return (
     <div className="relative bg-black overflow-hidden">
       {/* Background Pattern */}
@@ -29,7 +33,7 @@ const Hero = () => {
                     placeholder="Search for events"
                     className="pl-10 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                     onChange={(e) => console.log('Searching for:', e.target.value)}
-                    onKeyUp={(e) => console.log('KeyUp search for:', e.target.value)}
+                    onKeyUp={handleSearch}
                   />
                 </div>
               </div>

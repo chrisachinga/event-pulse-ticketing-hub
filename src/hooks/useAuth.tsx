@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Dummy admin credentials
@@ -91,3 +91,5 @@ export const useAuth = () => {
     requireAuth,
   };
 };
+
+export default useAuth;
