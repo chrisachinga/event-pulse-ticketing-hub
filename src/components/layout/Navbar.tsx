@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, User, LogIn } from 'lucide-react';
+import { Menu, X, User, LogIn, Award } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,8 +30,8 @@ const Navbar = () => {
           <Link to="/events" className="text-gray-700 hover:text-primary transition-colors">
             Events
           </Link>
-          <Link to="/awards" className="text-gray-700 hover:text-primary transition-colors">
-            Awards
+          <Link to="/awards" className="text-gray-700 hover:text-primary transition-colors flex items-center">
+            <Award className="h-4 w-4 mr-1" /> Awards
           </Link>
           <div className="ml-4">
             {isLoggedIn ? (
@@ -99,10 +99,10 @@ const Navbar = () => {
               </Link>
               <Link 
                 to="/awards" 
-                className="text-gray-700 hover:text-primary transition-colors"
+                className="text-gray-700 hover:text-primary transition-colors flex items-center"
                 onClick={() => setIsOpen(false)}
               >
-                Awards
+                <Award className="h-4 w-4 mr-1" /> Awards
               </Link>
               <div className="pt-4 border-t border-gray-200">
                 {isLoggedIn ? (

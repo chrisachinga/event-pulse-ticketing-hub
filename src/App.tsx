@@ -17,6 +17,8 @@ import EventManagement from "./pages/admin/EventManagement";
 import CheckIn from "./pages/admin/CheckIn";
 import EventAnalytics from "./pages/admin/EventAnalytics";
 import VotingPage from "./pages/VotingPage";
+import Awards from "./pages/Awards";
+import AwardDetails from "./pages/AwardDetails";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,8 @@ const App = () => (
           <Route path="/admin/events" element={<EventManagement />} />
           <Route path="/admin/events/:id/check-in" element={<CheckIn />} />
           <Route path="/admin/events/:id/analytics" element={<EventAnalytics />} />
+          <Route path="/awards" element={<Awards />} />
+          <Route path="/awards/:id" element={<AwardDetails />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
