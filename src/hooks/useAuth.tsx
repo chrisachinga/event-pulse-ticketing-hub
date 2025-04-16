@@ -12,10 +12,14 @@ const ADMIN_PASSWORD = 'admin123';
 const USER_USERNAME = 'user';
 const USER_PASSWORD = 'user123';
 
+// Session timeout duration in milliseconds (6 hours)
+const SESSION_DURATION = 6 * 60 * 60 * 1000;
+
 interface AuthState {
   isAuthenticated: boolean;
   isAdmin: boolean;
   username: string | null;
+  sessionExpiry: number | null;
 }
 
 export const useAuth = () => {
@@ -23,13 +27,14 @@ export const useAuth = () => {
     isAuthenticated: false,
     isAdmin: false,
     username: null,
+    sessionExpiry: null,
   });
   const navigate = useNavigate();
   const { toast } = useToast();
   
   // Get the required functions from useCache
   const { data, loading, error, refresh } = useCache(
-    { key: 'auth_state', ttl: 48 * 60 * 60 * 1000 },
+    { key: 'auth_state', ttl: SESSION_DURATION },
     async () => Promise.resolve(null)
   );
   
@@ -39,7 +44,15 @@ export const useAuth = () => {
     if (storedAuth) {
       try {
         const parsedAuth = JSON.parse(storedAuth);
-        setAuthState(parsedAuth);
+        
+        // Check if the session is expired
+        if (parsedAuth.sessionExpiry && parsedAuth.sessionExpiry > Date.now()) {
+          setAuthState(parsedAuth);
+        } else {
+          // If expired, clear the session
+          sessionStorage.removeItem('auth');
+          console.log('Session expired, please log in again');
+        }
       } catch (error) {
         console.error('Error parsing auth state', error);
         sessionStorage.removeItem('auth');
@@ -48,12 +61,15 @@ export const useAuth = () => {
   }, []);
 
   const login = (username: string, password: string): boolean => {
+    const sessionExpiry = Date.now() + SESSION_DURATION;
+    
     // Admin login
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
       const newState = {
         isAuthenticated: true,
         isAdmin: true,
         username,
+        sessionExpiry,
       };
       setAuthState(newState);
       sessionStorage.setItem('auth', JSON.stringify(newState));
@@ -70,6 +86,7 @@ export const useAuth = () => {
         isAuthenticated: true,
         isAdmin: false,
         username,
+        sessionExpiry,
       };
       setAuthState(newState);
       sessionStorage.setItem('auth', JSON.stringify(newState));
@@ -96,6 +113,7 @@ export const useAuth = () => {
       isAuthenticated: false,
       isAdmin: false,
       username: null,
+      sessionExpiry: null,
     });
     sessionStorage.removeItem('auth');
     navigate('/login');
@@ -117,6 +135,17 @@ export const useAuth = () => {
       return false;
     }
     
+    // Check if session is expired
+    if (authState.sessionExpiry && authState.sessionExpiry < Date.now()) {
+      logout();
+      toast({
+        title: "Session expired",
+        description: "Your session has expired. Please log in again.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
     if (isAdmin && !authState.isAdmin) {
       navigate('/dashboard');
       toast({
@@ -130,11 +159,25 @@ export const useAuth = () => {
     return true;
   };
 
+  // Extend session when user is active
+  const extendSession = () => {
+    if (authState.isAuthenticated) {
+      const newExpiry = Date.now() + SESSION_DURATION;
+      const updatedState = {
+        ...authState,
+        sessionExpiry: newExpiry,
+      };
+      setAuthState(updatedState);
+      sessionStorage.setItem('auth', JSON.stringify(updatedState));
+    }
+  };
+
   return {
     ...authState,
     login,
     logout,
     requireAuth,
+    extendSession,
   };
 };
 

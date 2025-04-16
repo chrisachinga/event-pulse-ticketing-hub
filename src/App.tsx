@@ -30,6 +30,14 @@ import OrganizerDetails from "./pages/OrganizerDetails";
 import Pricing from "./pages/Pricing";
 import TicketSearch from "./pages/TicketSearch";
 import ProtectedRoute from "./components/protected/ProtectedRoute";
+import DashboardEvents from "./pages/dashboard/DashboardEvents";
+import DashboardTickets from "./pages/dashboard/DashboardTickets";
+import DashboardAwards from "./pages/dashboard/DashboardAwards";
+import DashboardTeam from "./pages/dashboard/DashboardTeam";
+import DashboardAnalytics from "./pages/dashboard/DashboardAnalytics";
+import DashboardEmail from "./pages/dashboard/DashboardEmail";
+import DashboardSettings from "./pages/dashboard/DashboardSettings";
+import CreateEvent from "./pages/CreateEvent";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,7 +60,71 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/create-event" element={<CreateEvent />} />
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/events" 
+              element={
+                <ProtectedRoute>
+                  <DashboardEvents />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/tickets" 
+              element={
+                <ProtectedRoute>
+                  <DashboardTickets />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/awards" 
+              element={
+                <ProtectedRoute>
+                  <DashboardAwards />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/team" 
+              element={
+                <ProtectedRoute>
+                  <DashboardTeam />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/analytics" 
+              element={
+                <ProtectedRoute>
+                  <DashboardAnalytics />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/email" 
+              element={
+                <ProtectedRoute>
+                  <DashboardEmail />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/settings" 
+              element={
+                <ProtectedRoute>
+                  <DashboardSettings />
+                </ProtectedRoute>
+              } 
+            />
             <Route path="/events" element={<Events />} />
             <Route path="/events/:id" element={<EventDetails />} />
             <Route path="/events/:id/tickets" element={<TicketPurchase />} />
