@@ -85,7 +85,7 @@ const AuthForm = ({ defaultType = 'login' }: { defaultType?: AuthType }) => {
         </CardTitle>
         <CardDescription className="text-center">
           {authType === 'login'
-            ? 'Enter your credentials to access your account'
+            ? 'Enter your email and password to access your account'
             : 'Fill in your details to get started'}
         </CardDescription>
       </CardHeader>
@@ -117,7 +117,7 @@ const AuthForm = ({ defaultType = 'login' }: { defaultType?: AuthType }) => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="example@email.com"
+                  placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required

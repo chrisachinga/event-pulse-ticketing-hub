@@ -5,9 +5,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useCache } from '@/hooks/useCache'; // Using named import
 
 // Test credentials
-const ADMIN_USERNAME = 'admin';
+const ADMIN_EMAIL = 'admin@example.com';
 const ADMIN_PASSWORD = 'admin123';
-const USER_USERNAME = 'user';
+const USER_EMAIL = 'user@example.com';
 const USER_PASSWORD = 'user123';
 
 // Session timeout duration in milliseconds (6 hours)
@@ -16,7 +16,7 @@ const SESSION_DURATION = 6 * 60 * 60 * 1000;
 interface AuthState {
   isAuthenticated: boolean;
   isAdmin: boolean;
-  username: string | null;
+  email: string | null;
   sessionExpiry: number | null;
 }
 
@@ -24,7 +24,7 @@ export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
     isAdmin: false,
-    username: null,
+    email: null,
     sessionExpiry: null,
   });
   const navigate = useNavigate();
@@ -95,15 +95,15 @@ export const useAuth = () => {
     };
   }, []);
 
-  const login = (username: string, password: string): boolean => {
+  const login = (email: string, password: string): boolean => {
     const sessionExpiry = Date.now() + SESSION_DURATION;
     
     // Admin login
-    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
       const newState = {
         isAuthenticated: true,
         isAdmin: true,
-        username,
+        email,
         sessionExpiry,
       };
       setAuthState(newState);
@@ -116,11 +116,11 @@ export const useAuth = () => {
       return true;
     } 
     // Regular user login
-    else if (username === USER_USERNAME && password === USER_PASSWORD) {
+    else if (email === USER_EMAIL && password === USER_PASSWORD) {
       const newState = {
         isAuthenticated: true,
         isAdmin: false,
-        username,
+        email,
         sessionExpiry,
       };
       setAuthState(newState);
@@ -136,7 +136,7 @@ export const useAuth = () => {
     else {
       toast({
         title: "Login failed",
-        description: "Invalid username or password",
+        description: "Invalid email or password",
         variant: "destructive",
       });
       return false;
@@ -147,7 +147,7 @@ export const useAuth = () => {
     setAuthState({
       isAuthenticated: false,
       isAdmin: false,
-      username: null,
+      email: null,
       sessionExpiry: null,
     });
     sessionStorage.removeItem('auth');

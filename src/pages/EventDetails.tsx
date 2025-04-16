@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Calendar, Clock, MapPin, Users, Award, User } from 'lucide-react';
 import { formatDate, formatTime } from '@/lib/utils';
 import EventRating from '@/components/events/EventRating';
+import EventCountdown from '@/components/events/EventCountdown';
 
 // Mock data - in a real app would come from API
 const eventDetails = {
@@ -78,6 +79,9 @@ const EventDetails = () => {
             </div>
           </div>
         </div>
+
+        {/* Event Countdown */}
+        <EventCountdown eventDate={eventDetails.date} />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Event Details */}
