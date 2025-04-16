@@ -16,7 +16,7 @@ const DashboardEvents = () => {
             <p className="text-gray-500">Manage your events</p>
           </div>
           <Button className="bg-primary hover:bg-primary-dark">
-            <Link to="/admin/events/create">Create New Event</Link>
+            <Link to="/admin/events/create" className="text-white">Create New Event</Link>
           </Button>
         </div>
 

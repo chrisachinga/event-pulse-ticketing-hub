@@ -2,13 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { useCache } from '@/hooks/useCache'; // Changed from default import to named import
+import { useCache } from '@/hooks/useCache'; // Using named import
 
-// Dummy admin credentials - hardcoded for now
+// Test credentials
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = 'admin123';
-
-// Regular user credentials
 const USER_USERNAME = 'user';
 const USER_PASSWORD = 'user123';
 
@@ -38,26 +36,63 @@ export const useAuth = () => {
     async () => Promise.resolve(null)
   );
   
+  // Check for stored session on mount
   useEffect(() => {
-    // Check for existing auth in session storage
-    const storedAuth = sessionStorage.getItem('auth');
-    if (storedAuth) {
-      try {
-        const parsedAuth = JSON.parse(storedAuth);
-        
-        // Check if the session is expired
-        if (parsedAuth.sessionExpiry && parsedAuth.sessionExpiry > Date.now()) {
-          setAuthState(parsedAuth);
-        } else {
-          // If expired, clear the session
+    const checkSession = () => {
+      const storedAuth = sessionStorage.getItem('auth');
+      if (storedAuth) {
+        try {
+          const parsedAuth = JSON.parse(storedAuth);
+          
+          // Check if the session is expired
+          if (parsedAuth.sessionExpiry && parsedAuth.sessionExpiry > Date.now()) {
+            setAuthState(parsedAuth);
+            
+            // Set up auto-logout when session expires
+            const timeUntilExpiry = parsedAuth.sessionExpiry - Date.now();
+            if (timeUntilExpiry > 0) {
+              const logoutTimer = setTimeout(() => {
+                logout();
+                toast({
+                  title: "Session expired",
+                  description: "Your session has expired. Please log in again.",
+                  variant: "destructive",
+                });
+              }, timeUntilExpiry);
+              
+              // Clean up the timer on component unmount
+              return () => clearTimeout(logoutTimer);
+            }
+          } else {
+            // If expired, clear the session
+            sessionStorage.removeItem('auth');
+          }
+        } catch (error) {
+          console.error('Error parsing auth state', error);
           sessionStorage.removeItem('auth');
-          console.log('Session expired, please log in again');
         }
-      } catch (error) {
-        console.error('Error parsing auth state', error);
-        sessionStorage.removeItem('auth');
       }
-    }
+    };
+    
+    checkSession();
+    
+    // Set up event listener for user activity to extend session
+    const activityEvents = ['mousedown', 'keypress', 'scroll', 'touchstart'];
+    
+    const handleUserActivity = () => {
+      extendSession();
+    };
+    
+    activityEvents.forEach(event => {
+      window.addEventListener(event, handleUserActivity);
+    });
+    
+    // Clean up event listeners
+    return () => {
+      activityEvents.forEach(event => {
+        window.removeEventListener(event, handleUserActivity);
+      });
+    };
   }, []);
 
   const login = (username: string, password: string): boolean => {
@@ -116,15 +151,16 @@ export const useAuth = () => {
       sessionExpiry: null,
     });
     sessionStorage.removeItem('auth');
-    navigate('/login');
     
     toast({
       title: "Logged out",
       description: "You have been successfully logged out",
     });
+    
+    navigate('/login');
   };
 
-  const requireAuth = (isAdmin: boolean = false) => {
+  const requireAuth = (isAdminRequired: boolean = false) => {
     if (!authState.isAuthenticated) {
       navigate('/login', { state: { from: window.location.pathname } });
       toast({
@@ -146,7 +182,7 @@ export const useAuth = () => {
       return false;
     }
     
-    if (isAdmin && !authState.isAdmin) {
+    if (isAdminRequired && !authState.isAdmin) {
       navigate('/dashboard');
       toast({
         title: "Access denied",

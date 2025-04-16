@@ -1,11 +1,12 @@
 
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 
 const CreateEvent = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated, isAdmin } = useAuth();
   const { toast } = useToast();
 
@@ -16,13 +17,16 @@ const CreateEvent = () => {
         description: "Please login to create an event",
         variant: "destructive",
       });
-      navigate('/login', { state: { from: '/create-event' } });
-    } else if (isAdmin) {
-      navigate('/admin/events/create');
+      navigate('/login', { state: { from: location.pathname } });
     } else {
-      navigate('/admin/events/create'); // Regular users can also create events
+      // Both admin and regular users can create events
+      navigate('/dashboard/events');
+      toast({
+        title: "Create Event",
+        description: "You can create your event from the dashboard",
+      });
     }
-  }, [isAuthenticated, isAdmin, navigate, toast]);
+  }, [isAuthenticated, isAdmin, navigate, toast, location]);
 
   return (
     <div className="flex items-center justify-center h-screen">

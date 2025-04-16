@@ -1,43 +1,80 @@
 
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 type AuthType = 'login' | 'register';
 
 const AuthForm = ({ defaultType = 'login' }: { defaultType?: AuthType }) => {
   const [authType, setAuthType] = useState<AuthType>(defaultType);
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+  const { login } = useAuth();
+  
+  // Get redirect location from state if available
+  const from = location.state?.from || '/dashboard';
   
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsLoading(true);
     
-    // Mock authentication
-    setTimeout(() => {
-      setIsLoading(false);
-      
+    try {
       if (authType === 'login') {
-        toast({
-          title: "Logged in successfully",
-          description: "Welcome back to EventPulse!",
-        });
+        const success = login(email, password);
+        if (success) {
+          navigate(from);
+        } else {
+          setIsLoading(false);
+        }
       } else {
-        toast({
-          title: "Account created",
-          description: "Welcome to EventPulse!",
-        });
+        // For demo, simulate registration then login
+        if (password !== confirmPassword) {
+          toast({
+            title: "Passwords don't match",
+            description: "Please ensure your passwords match",
+            variant: "destructive",
+          });
+          setIsLoading(false);
+          return;
+        }
+        
+        // Mock successful registration
+        setTimeout(() => {
+          toast({
+            title: "Account created",
+            description: `Welcome to EventPulse, ${name}!`,
+          });
+          // Auto login after registration
+          const success = login(email, password);
+          if (success) {
+            navigate(from);
+          } else {
+            setIsLoading(false);
+          }
+        }, 1000);
       }
-      
-      navigate('/dashboard');
-    }, 1500);
+    } catch (error) {
+      console.error('Authentication error:', error);
+      toast({
+        title: "Authentication failed",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+    }
   };
   
   return (
@@ -67,6 +104,8 @@ const AuthForm = ({ defaultType = 'login' }: { defaultType?: AuthType }) => {
                   <Input
                     id="name"
                     placeholder="John Doe"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     required
                     disabled={isLoading}
                   />
@@ -79,6 +118,8 @@ const AuthForm = ({ defaultType = 'login' }: { defaultType?: AuthType }) => {
                   id="email"
                   type="email"
                   placeholder="example@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   disabled={isLoading}
                 />
@@ -99,6 +140,8 @@ const AuthForm = ({ defaultType = 'login' }: { defaultType?: AuthType }) => {
                 <Input
                   id="password"
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                   disabled={isLoading}
                 />
@@ -110,6 +153,8 @@ const AuthForm = ({ defaultType = 'login' }: { defaultType?: AuthType }) => {
                   <Input
                     id="confirmPassword"
                     type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                     disabled={isLoading}
                   />
