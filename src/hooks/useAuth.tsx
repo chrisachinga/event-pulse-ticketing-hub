@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { useCache } from '@/hooks/useCache'; // Using named import
+import { useCache } from '@/hooks/useCache';
 
 // Test credentials
 const ADMIN_EMAIL = 'admin@example.com';
@@ -28,6 +28,7 @@ export const useAuth = () => {
     sessionExpiry: null,
   });
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   
   // Get the required functions from useCache
@@ -113,6 +114,11 @@ export const useAuth = () => {
         title: "Logged in as Admin",
         description: "Welcome back, Admin!",
       });
+
+      // Get redirect location from state or default to dashboard
+      const from = location.state?.from || '/dashboard';
+      navigate(from, { replace: true });
+      
       return true;
     } 
     // Regular user login
@@ -130,6 +136,11 @@ export const useAuth = () => {
         title: "Logged in",
         description: "Welcome back!",
       });
+
+      // Get redirect location from state or default to dashboard
+      const from = location.state?.from || '/dashboard';
+      navigate(from, { replace: true });
+      
       return true;
     }
     // Invalid credentials

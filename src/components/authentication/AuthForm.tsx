@@ -1,6 +1,5 @@
-
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,13 +18,9 @@ const AuthForm = ({ defaultType = 'login' }: { defaultType?: AuthType }) => {
   const [name, setName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   
-  const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
   const { login } = useAuth();
-  
-  // Get redirect location from state if available
-  const from = location.state?.from || '/dashboard';
   
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -34,13 +29,10 @@ const AuthForm = ({ defaultType = 'login' }: { defaultType?: AuthType }) => {
     try {
       if (authType === 'login') {
         const success = login(email, password);
-        if (success) {
-          navigate(from);
-        } else {
+        if (!success) {
           setIsLoading(false);
         }
       } else {
-        // For demo, simulate registration then login
         if (password !== confirmPassword) {
           toast({
             title: "Passwords don't match",
@@ -51,17 +43,13 @@ const AuthForm = ({ defaultType = 'login' }: { defaultType?: AuthType }) => {
           return;
         }
         
-        // Mock successful registration
         setTimeout(() => {
           toast({
             title: "Account created",
             description: `Welcome to EventPulse, ${name}!`,
           });
-          // Auto login after registration
           const success = login(email, password);
-          if (success) {
-            navigate(from);
-          } else {
+          if (!success) {
             setIsLoading(false);
           }
         }, 1000);
