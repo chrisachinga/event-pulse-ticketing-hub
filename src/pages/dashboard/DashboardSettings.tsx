@@ -13,7 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 
 const DashboardSettings = () => {
-  const { username } = useAuth();
+  const { email } = useAuth();
   const { toast } = useToast();
 
   const handleSaveProfile = (e: React.FormEvent) => {
@@ -59,7 +59,7 @@ const DashboardSettings = () => {
                   <div className="flex flex-col items-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
                     <Avatar className="h-20 w-20">
                       <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>{username?.substring(0, 2).toUpperCase() || 'CN'}</AvatarFallback>
+                      <AvatarFallback>{email?.substring(0, 2).toUpperCase() || 'CN'}</AvatarFallback>
                     </Avatar>
                     <Button variant="outline" type="button">
                       Change Avatar
@@ -81,7 +81,7 @@ const DashboardSettings = () => {
                   
                   <div className="space-y-2">
                     <Label htmlFor="email">Email Address</Label>
-                    <Input id="email" type="email" placeholder="Enter email" defaultValue={username || 'chris.doe@example.com'} />
+                    <Input id="email" type="email" placeholder="Enter email" defaultValue={email || 'chris.doe@example.com'} />
                   </div>
                   
                   <div className="space-y-2">
